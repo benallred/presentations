@@ -1,0 +1,16 @@
+#!csharp
+
+#r "nuget:Shouldly"
+using Shouldly;
+
+#!csharp
+
+public string GetSomething() => "test";
+
+GetSomething().ShouldBe("test");
+GetSomething().ShouldBe("something");
+
+#!csharp
+
+#nullable enable
+public string CannotBeNull() => null;
