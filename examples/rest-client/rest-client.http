@@ -1,0 +1,153 @@
+# Extension: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+# REST Client docs: https://github.com/Huachao/vscode-restclient#readme
+
+@baseUrl = https://httpbin.org
+
+### Basic
+GET {{baseUrl}}/get
+
+### curl
+curl --request GET --url https://httpbin.org/get --header 'user-agent: vscode-restclient'
+
+### Headers
+GET {{baseUrl}}/get
+HeaderName1: HeaderValue1
+HeaderName2: HeaderValue2
+
+### Query String 1
+GET {{baseUrl}}/get?name1=value1&name2=value2
+
+### Query String 2
+GET {{baseUrl}}/get
+    ?name1=value1
+    &name2=value2
+
+### Body (JSON)
+POST {{baseUrl}}/post
+Content-Type: application/json
+
+{
+    "someName": "someValue"
+}
+
+### Body (FORM 1)
+POST {{baseUrl}}/post
+Content-Type: application/x-www-form-urlencoded
+
+name1=value1&name2=value2
+
+### Body (FORM 2)
+POST {{baseUrl}}/post
+Content-Type: application/x-www-form-urlencoded
+
+name1=value1
+&name2=value2
+
+### Body (from file)
+POST {{baseUrl}}/post
+Content-Type: application/json
+
+< some-file.json
+
+### Body (from file with variables)
+POST {{baseUrl}}/post
+Content-Type: application/json
+
+<@ some-file-with-variables.json
+
+### System Dynamic Variables
+POST {{baseUrl}}/post
+Content-Type: application/json
+
+{
+    "00 $guid": "{{$guid}}",
+    "01 $randomInt minInclusive maxExclusive": "{{$randomInt 0 10}}",
+
+    // offset options
+    //  y   Year
+    //  M   Month
+    //  w   Week
+    //  d   Day
+    //  h   Hour
+    //  m   Minute
+    //  s   Second
+    //  ms  Millisecond
+    "02 $timestamp [offset option]": "{{$timestamp -1 d}}",
+
+    // Day.js docs: https://day.js.org/docs/en/display/format
+    "03 $datetime rfc1123": "{{$datetime rfc1123}}",
+    "04 $datetime iso8601": "{{$datetime iso8601}}",
+    "05 $datetime 'YYYYMMDD_HHmmss'": "{{$datetime 'YYYYMMDD_HHmmss'}}",
+    "06 $datetime 'YYYYMMDD_HHmmss' [offset option]": "{{$datetime 'YYYYMMDD_HHmmss' -1 d}}",
+    "07 $localDatetime rfc1123": "{{$localDatetime rfc1123}}",
+    "08 $localDatetime iso8601": "{{$localDatetime iso8601}}",
+    "09 $localDatetime 'YYYYMMDD_HHmmss'": "{{$localDatetime 'YYYYMMDD_HHmmss'}}",
+    "10 $localDatetime 'YYYYMMDD_HHmmss' [offset option]": "{{$localDatetime 'YYYYMMDD_HHmmss' -1 d}}",
+
+    "11 processEnv [%]envVarName": "{{$processEnv HomeDrive}}",
+    "12 dotenv [%]variableName": "{{$dotenv somethingInDotenv}}"
+}
+
+### Prompt Variables
+# @prompt name Prompt text
+GET {{baseUrl}}/get?name={{name}}
+
+### Request Variables part 1
+# @name myRequest
+POST {{baseUrl}}/post
+Content-Type: application/json
+
+{
+   "myVar": "myValue"
+}
+
+### Request Variables part 2
+POST {{baseUrl}}/post
+
+From the request:
+myRequest.request.headers.User-Agent: {{myRequest.request.headers.User-Agent}}
+myRequest.request.body.$.myVar: {{myRequest.request.body.$.myVar}}
+myRequest.request.body.*: {{myRequest.request.body.*}}
+
+From the response:
+myRequest.response.headers.Date: {{myRequest.response.headers.Date}}
+myRequest.response.body.$.myVar: {{myRequest.response.body.$.origin}}
+myRequest.response.body.*: {{myRequest.response.body.*}}
+
+### Confirm before running
+# @note
+GET {{baseUrl}}/get
+
+### Redirect
+GET {{baseUrl}}/redirect-to?url=https://example.com
+
+### No Redirect
+# @no-redirect
+GET {{baseUrl}}/redirect-to?url=https://example.com
+
+### Cookies (part 0; reset)
+GET {{baseUrl}}/cookies/delete?someCookie
+
+### Cookies (part 1)
+# @no-redirect
+GET {{baseUrl}}/cookies/set/someCookie/someValue
+
+### Cookies (part 2; remember cookies)
+GET {{baseUrl}}/cookies
+
+### Cookies (part 2; don't remember cookies)
+# @no-cookie-jar
+GET {{baseUrl}}/cookies
+
+### Other things, examples not shown here
+
+# Some of the settings I use
+#   "rest-client.previewOption": "exchange",
+#   "rest-client.previewResponsePanelTakeFocus": false,
+# Content body
+#   override default file encoding
+#   xml body
+#   multipart body
+# GraphQL request
+# Authentication schemes in the Authorization header
+# Environments defined in settings.json

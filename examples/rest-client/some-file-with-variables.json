@@ -1,0 +1,4 @@
+{
+  "somethingInAFile": "Some value in a file",
+  "variable should be replaced": "{{baseUrl}}"
+}
