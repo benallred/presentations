@@ -53,7 +53,7 @@ erDiagram
     string x PK "note"
   }
   B {
-    int y FK "note"
+    int y FK, UK "note"
   }
   A }o--|| B: something
 ```
@@ -144,8 +144,10 @@ https://mermaid-js.github.io/mermaid/#/sequenceDiagram?id=configuration
 %%{ init: { 'sequence': { 'showSequenceNumbers': false, 'mirrorActors': true } } }%%
 sequenceDiagram
     # Note left of A: Ordering, Actor, Alias, Actor Menus
-    actor F as First
-    participant A
+    box rgba(0, 256, 256, .10) some group
+      actor F as First
+      participant A
+    end
     link A: Bing @ https://bing.com
     link A: Dashboard @ https://bing.com
     links B: { "Bing": "https://bing.com", "Dashboard": "https://bing.com" }
